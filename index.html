@@ -83,10 +83,16 @@ var canvas = document.getElementById("cert");
 var ctx = canvas.getContext("2d");
 var img = new Image();
 function drawText(){
-  var px = (CFG.sizePct/100) * img.width;
-  ctx.font = (CFG.bold ? "bold " : "") + px + "px " + CFG.family;
   ctx.fillStyle = CFG.color;
   ctx.textAlign = CFG.align || "center"; ctx.textBaseline = "middle";
+  var px = (CFG.sizePct/100) * img.width;
+  var maxW = (1 - 2 * CFG.xFrac) * img.width;   // ancho disponible: margen derecho = margen izquierdo (xFrac)
+  ctx.font = (CFG.bold ? "bold " : "") + px + "px " + CFG.family;
+  var w = ctx.measureText(fullName).width;
+  if (w > maxW) {                               // nombre largo -> achicar proporcional hasta que entre
+    px = Math.max(px * maxW / w, 8);
+    ctx.font = (CFG.bold ? "bold " : "") + px + "px " + CFG.family;
+  }
   ctx.fillText(fullName, CFG.xFrac * img.width, CFG.yFrac * img.height);
 }
 img.onload = function(){
