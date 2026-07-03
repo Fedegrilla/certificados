@@ -72,7 +72,13 @@ var IMG_SRC = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAACWAAAAVGCAYAAAAaGIA
 var params = new URLSearchParams(location.search);
 var nombre = (params.get("nombre") || "").trim();
 var apellido = (params.get("apellido") || "").trim();
-var fullName = (nombre + " " + apellido).trim() || "Participante";
+var email = (params.get("email") || "").trim();
+function nameFromEmail(e){
+  var local = (String(e).split("@")[0] || "");
+  var parts = local.split(/[._+\-]+/).map(function(p){ return p.replace(/\d+/g, ""); }).filter(function(p){ return p.length > 0; });
+  return parts.map(function(p){ return p.charAt(0).toUpperCase() + p.slice(1).toLowerCase(); }).join(" ");
+}
+var fullName = (nombre + " " + apellido).trim() || (email ? nameFromEmail(email) : "") || "Participante";
 document.getElementById("title").textContent = "\u00a1Felicitaciones, " + fullName + "!";
 var canvas = document.getElementById("cert");
 var ctx = canvas.getContext("2d");
