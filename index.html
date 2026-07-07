@@ -113,6 +113,7 @@ var SHARE_TPL = "¡Hola a todos! Quiero compartirles que, como parte de mi forma
 Las Valijas Adaptativas integran herramientas tecnológicas y analógicas pensadas para favorecer la autonomía y el acceso al aprendizaje, respetando distintas formas de aprender
 Fue una experiencia sumamente enriquecedora que me permitió incorporar nuevos conocimientos y herramientas para acompañar trayectorias educativas diversas desde una mirada inclusiva.
 Sigamos construyendo aulas que promuevan la accesibilidad, la participación y la equidad.";
+var SHARE_TPL_X = "Participé del Taller Introductorio sobre el uso de Valijas Adaptativas de @Educabot 🎓 Herramientas para favorecer la autonomía y el acceso al aprendizaje desde una mirada inclusiva. ¡Sigamos construyendo aulas más accesibles y equitativas!";
 var SHARE_TITLE = "Certificado";
 function shareMsg(){ return SHARE_TPL.replace(/\{nombre\}/g, fullName); }
 var modal = document.getElementById("shareModal");
@@ -122,7 +123,7 @@ document.getElementById("shareBtn").addEventListener("click", function(){
   document.getElementById("shareUrl").value = u;
   document.getElementById("netWa").href = "https://wa.me/?text=" + encodeURIComponent(t + " " + u);
   document.getElementById("netFb").href = "https://www.facebook.com/sharer/sharer.php?u=" + eu;
-  document.getElementById("netX").href = "https://twitter.com/intent/tweet?text=" + et + "&url=" + eu;
+  document.getElementById("netX").href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(SHARE_TPL_X.replace(/\{nombre\}/g, fullName)) + "&url=" + eu;
   document.getElementById("netLi").href = "https://www.linkedin.com/sharing/share-offsite/?url=" + eu;
   document.getElementById("netTg").href = "https://t.me/share/url?url=" + eu + "&text=" + et;
   document.getElementById("netMail").href = "mailto:?subject=" + encodeURIComponent(SHARE_TITLE) + "&body=" + encodeURIComponent(t + "\n" + u);
