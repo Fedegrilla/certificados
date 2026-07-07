@@ -108,7 +108,11 @@ document.getElementById("pdfBtn").addEventListener("click", function(){
   pdf.addImage(canvas.toDataURL("image/jpeg", 0.92), "JPEG", 0, 0, canvas.width, canvas.height);
   pdf.save("certificado-" + fullName.replace(/\s+/g, "-").toLowerCase() + ".pdf");
 });
-var SHARE_TPL = "¡Hola a todos! Quiero compartirles que, como parte de mi formación continua y con el objetivo de seguir fortaleciendo mi práctica pedagógica, participé del Taller Introductorio sobre el uso de Valijas Adaptativas brindado por @Educabot.\n\nLas Valijas Adaptativas fueron diseñadas y desarrolladas junto a especialistas en pedagogía, inclusión e inteligencia artificial. Integran herramientas tecnológicas y analógicas orientadas a favorecer la autonomía de los estudiantes, ampliar sus posibilidades de participación y fortalecer el acceso a las propuestas pedagógicas, respetando las distintas formas de aprender.\n\nFue una experiencia sumamente enriquecedora que me permitió incorporar nuevos conocimientos y herramientas para acompañar trayectorias educativas diversas desde una mirada inclusiva.\nMuchas gracias a @Educabot , a la Dirección General de Educación Especial y a la Secretaría de Ciencia del @Gobierno de Chubut por esta oportunidad de formación profesional.\n\nSigamos construyendo aulas que promuevan la accesibilidad, la participación y la equidad.";
+var SHARE_TPL = "¡Hola a todos! Quiero compartirles que, como parte de mi formación continua y con el objetivo de seguir fortaleciendo mi práctica pedagógica, participé del Taller Introductorio sobre el uso de Valijas Adaptativas brindado por @Educabot.
+
+Las Valijas Adaptativas integran herramientas tecnológicas y analógicas pensadas para favorecer la autonomía y el acceso al aprendizaje, respetando distintas formas de aprender
+Fue una experiencia sumamente enriquecedora que me permitió incorporar nuevos conocimientos y herramientas para acompañar trayectorias educativas diversas desde una mirada inclusiva.
+Sigamos construyendo aulas que promuevan la accesibilidad, la participación y la equidad.";
 var SHARE_TITLE = "Certificado";
 function shareMsg(){ return SHARE_TPL.replace(/\{nombre\}/g, fullName); }
 var modal = document.getElementById("shareModal");
