@@ -56,6 +56,30 @@ propio). Subí `index.html` y `preview.jpg` juntos a la raíz.
 Y `preview.jpg` tiene que quedar junto al `index.html`. (Los links firmados
 funcionan en cualquier dominio — la firma es sobre el nombre, no sobre la URL.)
 
+## Agregar participantes nuevos (equipo — requiere la clave privada)
+
+Cada link es válido solo si está **firmado** con la clave privada
+(`cert_private_key.pem`, que NO está en este repo y hay que guardar en secreto).
+La clave pública embebida en `index.html` solo sirve para *verificar*, no para
+*firmar*. Por eso sumar gente nueva = firmarle el nombre.
+
+Herramienta: `firmar_certificados.py` (queda junto a la clave privada, fuera del repo).
+
+1. Completar `nuevos_contactos.csv` (una fila por persona):
+   ```
+   EMAIL,NOMBRE,APELLIDO
+   ana@mail.com,Ana,Czubaj
+   ```
+2. Correr:  `python firmar_certificados.py`
+3. Se genera `nuevos_links.csv` (con la columna `LINK` firmada) → importar en Brevo
+   mapeando `LINK` a un atributo. En el botón del mail: `{{ contact.LINK }}`.
+
+**Cómo saber si un link es válido:** abrilo. Muestra el nombre = válido;
+dice "Certificado no válido" = firma ausente o incorrecta. Nadie puede fabricar
+un link válido sin la clave privada.
+
+> Si cambia el dominio del hosting, editar la línea `BASE = "..."` del script.
+
 ---
 
 La verificación de firma y el auto-ajuste del nombre son ajustes manuales sobre
