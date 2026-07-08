@@ -1,65 +1,62 @@
-# Certificado Educabot — Taller Valijas Adaptativas
+# Certificado Educabot — Primer Encuentro de Formación (Valijas Adaptativas)
 
-Certificado web **personalizado y estático** para los participantes del Taller
-Introductorio sobre el uso de las Valijas Adaptativas (Educabot · Ministerio de
-Educación · Gobierno del Chubut).
+Certificado web **personalizado y estático** para los participantes del Primer
+Encuentro de Formación sobre el uso de las Valijas Adaptativas (Educabot ·
+Ministerio de Educación · Gobierno del Chubut).
 
-Es una sola página autocontenida: recibe el nombre por la URL y dibuja el
-certificado en el navegador, con botones para descargar en PNG / PDF y compartir
-en redes.
+Es una sola página autocontenida: recibe un **link firmado** por persona, verifica
+la firma en el navegador y dibuja el certificado, con botones para descargar en
+PNG / PDF y compartir en redes.
 
 ## Archivos
 
 | Archivo | Qué es |
 |---|---|
-| `index.html` | La página del certificado (autocontenida: fondo, fuente y lógica embebidos). |
+| `index.html` | La página del certificado (autocontenida: fondo, fuente, lógica y clave pública embebidos). |
 | `preview.jpg` | Imagen fija para la tarjeta social (WhatsApp/Facebook/X al pegar el link). |
 
-## Cómo funciona
+## Seguridad — links firmados (importante)
 
-El nombre se pasa por parámetros en la URL:
+Para evitar que cualquiera edite el nombre en la URL y se genere un certificado
+falso, **el nombre va firmado criptográficamente** (ECDSA P-256). Cada persona
+recibe un link único con esta forma:
 
 ```
-https://<DOMINIO>/?nombre=Ana&apellido=Czubaj
+https://<DOMINIO>/?d=<nombre-codificado>&s=<firma>
 ```
 
-- Si `nombre`/`apellido` vienen vacíos, deriva el nombre del parámetro `email`
-  (parte antes del `@`). Ej: `?email=ana.czubaj@gmail.com` → "Ana Czubaj".
-- Si tampoco hay email, muestra "Participante".
-- El nombre **se achica automáticamente** si es muy largo, para no pisar el
-  listón/medalla de la derecha.
+La página lleva embebida solo la **clave pública** y verifica la firma con
+Web Crypto. Si alguien cambia el `d` (el nombre), la firma no valida y aparece
+**"Certificado no válido"**. Solo los links generados con la **clave privada**
+(que NO está en este repo) funcionan.
+
+> Los links con `?nombre=...` (sin firma) ya **no** funcionan — es a propósito.
 
 ### Uso con Brevo (mailing)
 
-En el botón del email, pegar:
+Cada contacto tiene su link firmado cargado como atributo (ej. `LINK`). En el
+botón del email:
 
 ```
-https://<DOMINIO>/?nombre={{ contact.NOMBRE }}&apellido={{ contact.APELLIDO }}
+{{ contact.LINK }}
 ```
 
 ## Cómo hostearlo
 
-Es estático, sirve en cualquier hosting (GitHub Pages, Netlify, Vercel, servidor
-propio). Con **GitHub Pages**:
+Es estático, sirve en cualquier hosting (Railway, GitHub Pages, Netlify, servidor
+propio). Subí `index.html` y `preview.jpg` juntos a la raíz.
 
-1. Subí `index.html` y `preview.jpg` a la raíz de un repo.
-2. **Settings → Pages → Source: `main` / `/root`**.
-3. Queda publicado en `https://<usuario>.github.io/<repo>/`.
-
-### ⚠️ Al mover a otro dominio, actualizar 3 cosas en `index.html`
-
-Las meta tags del preview están fijas y hay que apuntarlas al dominio nuevo
-(si no, la tarjeta social sigue mostrando el preview del dominio anterior):
+### ⚠️ Al mover a otro dominio, actualizar 2 cosas en `index.html`
 
 ```html
 <meta property="og:image"  content="https://<DOMINIO>/preview.jpg">
 <meta name="twitter:image" content="https://<DOMINIO>/preview.jpg">
 ```
 
-Y `preview.jpg` tiene que quedar junto al `index.html`.
+Y `preview.jpg` tiene que quedar junto al `index.html`. (Los links firmados
+funcionan en cualquier dominio — la firma es sobre el nombre, no sobre la URL.)
 
 ---
 
-Generado con el generador de certificados de Educabot. La lógica de
-derivar-nombre-desde-email y el auto-shrink del nombre son ajustes manuales
-sobre el export del generador — si se re-exporta el HTML, hay que reaplicarlos.
+La verificación de firma y el auto-ajuste del nombre son ajustes manuales sobre
+el export del generador — si se re-exporta el HTML, hay que reaplicarlos.
